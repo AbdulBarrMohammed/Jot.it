@@ -1,0 +1,113 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jot.It</title>
+</head>
+<body>
+    <header>
+        <p>Jot<span>.</span>It</p>
+
+    </header>
+    <div class="sidebar">
+        <div class="homeContainer">
+            <p>Home</p>
+            <div class="tasksBtn">
+                <img src="img/inbox-outline.svg">
+                <p>Tasks</p>
+            </div>
+            <div class="todayBtn">
+                <img src="img/numeric-1-box-outline.svg">
+                <p>Today</p>
+            </div>
+            <div class="nextDaysBtn">
+                <img src="img/calendar-month-outline.svg">
+                <p>Next 7 Days</p>
+            </div>
+            <div class="importantBtn">
+                <img src="img/star-outline.svg">
+                <p>Important</p>
+            </div>
+        </div>
+        <div class="projectContainer">
+            <p>Projects</p>
+            <div class="addProjectBtn">
+                <img src="img/plus-circle.svg">
+                <p>Add Project</p>
+            </div>
+
+            <div class="projectItem">
+                <!--
+                <img>
+                <p>Project PlaceHolder</p> -->
+                <dialog id="editOrDeleteDialog">
+                    <form method="dialog">
+                        <p>Edit or Delete</p>
+                        <button class="delete-project-btn">delete</button>
+                        <button class="edit-project-btn">Edit</button>
+
+                    </form>
+                  </dialog>
+
+            </div>
+        </div>
+
+    </div>
+    <dialog id="projectDialog">
+        <form method="dialog">
+            <p>Add New Project</p>
+
+            <input type="text" id="title" placeholder="Project Title" required />
+
+            <button class="submit-button">Submit</button>
+            <button class="cancel-button">Cancel</button>
+
+        </form>
+      </dialog>
+
+      <dialog id="addTaskDialog">
+        <form method="dialog">
+            <p>Add New Book</p>
+
+            <input type="text" id="taskTitle" placeholder="Title" required />
+            <input type="text" id="details" placeholder="Details" required />
+            <input type="date" id="date" placeholder="Date" required />
+
+            <button class="submit-button-task">Submit</button>
+            <button class="cancel-button-task">Cancel</button>
+
+        </form>
+      </dialog>
+      <dialog id="editTaskDialog">
+        <form method="dialog">
+            <p>Edit Task</p>
+
+            <input type="text" id="editTaskTitle" placeholder="Title" required />
+            <input type="text" id="editDetails" placeholder="Details" required />
+            <input type="date" id="editDate" placeholder="Date" required />
+
+            <button class="submit-button-edit">Submit</button>
+            <button class="cancel-button-edit">Cancel</button>
+
+        </form>
+      </dialog>
+    <div id="content">
+        <p>Today</p>
+        <p>My Projects</p>
+        <div class="projectLst">
+
+        </div>
+
+    </div>
+
+    <dialog id="editOrDeleteTaskDialog">
+        <form method="dialog">
+            <p>Edit or Delete</p>
+            <button class="delete-task-btn">delete</button>
+            <button class="edit-task-btn">Edit</button>
+
+        </form>
+      </dialog>
+
+</body>
+</html>
