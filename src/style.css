@@ -89,4 +89,50 @@ body {
     padding: 50px;
 }
 
-/* Content inner styling outline */
+/* Styling dialog forms */
+
+button {
+    border: none;
+    font-weight: bold;
+    background-color: #3981F7;
+    padding: 15px;
+    color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 100%;
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    gap: 10px;
+
+}
+
+
+dialog {
+    border: none;
+    margin-top: 100px;
+    margin-left: 600px;
+    border-radius: 5px;
+}
+
+form input {
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: gray;
+    border-radius: 5px;
+    border: 1px solid black;
+
+}
+
+form p {
+    font-size: 20px;
+    font-weight: bolder;
+    padding: 10px;
+
+}

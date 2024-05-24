@@ -73,6 +73,10 @@ function createTaskCard(title, details, date, isCrossedOut, id) {
 
     const circle = document.createElement('div');
     circle.style.height = '20px';
+    circle.style.width = '20px';
+    circle.style.border = '1px solid black';
+    circle.style.borderRadius = '20px';
+    circle.id = 'circle';
 
     if (isCrossedOut) {
         circle.style.backgroundColor = '#3981F7';
@@ -81,10 +85,6 @@ function createTaskCard(title, details, date, isCrossedOut, id) {
     else {
         circle.style.backgroundColor = 'white';
     }
-    circle.style.width = '20px';
-    circle.style.border = '1px solid black';
-    circle.style.borderRadius = '20px';
-    circle.id = 'circle';
 
     const leftSide = document.createElement('div');
     leftSide.style.display = 'flex';
@@ -107,10 +107,23 @@ function createTaskCard(title, details, date, isCrossedOut, id) {
     dateTag.style.color = '#3981F7';
     dateTag.id = 'dateTag';
 
+
+    /*
     const starImg = document.createElement('img');
     starImg.src = star;
     starImg.style.height = '20px';
-    starImg.id = 'starBtn';
+    starImg.id = 'starBtn'; */
+
+    const starSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    starSvg.setAttribute('viewBox', '0 0 24 24');
+    starSvg.id = 'starBtn';
+    starSvg.style.height = '20px';
+    //starSvg.style.fill = 'gray';
+
+    const starPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    starPath.setAttribute('d', 'M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z');
+
+    starSvg.appendChild(starPath);
 
     const deleteOrEdit = document.createElement('img');
     deleteOrEdit.src = verticalDots;
@@ -118,7 +131,8 @@ function createTaskCard(title, details, date, isCrossedOut, id) {
     deleteOrEdit.id = 'deleteOrEditTask';
 
     rightContainer.appendChild(dateTag);
-    rightContainer.appendChild(starImg);
+    //rightContainer.appendChild(starImg);
+    rightContainer.appendChild(starSvg);
     rightContainer.appendChild(deleteOrEdit);
 
 

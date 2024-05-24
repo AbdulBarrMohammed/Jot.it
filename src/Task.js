@@ -8,6 +8,7 @@ class Task {
         this.date = date;
         this.isCrossedOut = false;
         this.id = '';
+        this.isImportant = false;
     }
 
     setId(id) {
@@ -26,6 +27,13 @@ class Task {
         return this.isCrossedOut;
     }
 
+    setIsImportant(bool) {
+        this.isImportant = bool;
+    }
+
+    getIsImportant() {
+        return this.isImportant;
+    }
     getTitle() {
         return this.title;
     }

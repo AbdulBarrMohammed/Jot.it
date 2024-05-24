@@ -5,39 +5,66 @@ import { createProjectHeader } from "./createProjectContent";
 import { addTaskButtonDiv } from "./createProjectContent";
 
 const projectList = {};
-const todayList = {};
-const importantList = {};
 const next7daysList = {};
-const allTasksList = {};
 
 let currentTaskDivId = '';
 
 //buttons
 const addProjectBtn = document.querySelector('.addProjectBtn');
-const taskBtn = document.querySelector('.tasksBtn');
+const taskTabBtn = document.querySelector('.tasksBtn');
 const todayBtn = document.querySelector('.todayBtn');
 const next7DaysBtn = document.querySelector('.nextDaysBtn');
 const importantBtn = document.querySelector('.importantBtn');
 
+//Edit or delete project diaglog
 const editOrDeleteDialog = document.querySelector('#editOrDeleteDialog');
 
+//Edit or delete Task dialog
 const editOrDeleteTaskDialog = document.getElementById("editOrDeleteTaskDialog");
 const editTaskBtn = editOrDeleteTaskDialog.querySelector(".edit-task-btn");
 const deleteTaskBtn = editOrDeleteTaskDialog.querySelector('.delete-task-btn');
 
+// function to display all the tasks added when the task tab btn is pressed;
+taskTabBtn.addEventListener('click', function(e) {
 
-taskBtn.addEventListener('click', function(e) {
     content.innerHTML = '';
-    for (const task in allTasksList) {
-        const taskItems = allTasksList[task];
-        for (let i = 0; i < taskItems.length; i++) {
-            content.appendChild(taskItems[i]);
+    for (const task in projectList) {
+        const taskLst = projectList[task].getTaskList();
+        for (let i = 0; i < taskLst.length; i++) {
+            content.appendChild(taskLst[i].createTaskDiv());
+            console.log(taskLst[i].createTaskDiv());
         }
+
     }
 })
 
 todayBtn.addEventListener('click', function(e) {
-    content.innerHTML = 'Today';
+    content.innerHTML = '';
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    month = month.toString();
+
+    if (month.length === 1) {
+        month = `0${month}`;
+    }
+
+    let fullDate = `${year}-${month}-${day}`;
+    console.log(fullDate);
+
+    content.innerHTML = '';
+    for (const task in projectList) {
+        const taskLst = projectList[task].getTaskList();
+        for (let i = 0; i < taskLst.length; i++) {
+            if(taskLst[i].getDate() === fullDate) {
+                content.appendChild(taskLst[i].createTaskDiv());
+            }
+
+        }
+
+    }
 })
 
 next7DaysBtn.addEventListener('click', function(e) {
@@ -45,10 +72,21 @@ next7DaysBtn.addEventListener('click', function(e) {
 })
 
 importantBtn.addEventListener('click', function(e) {
-    content.innerHTML = 'Important';
+    content.innerHTML = '';
+    for (const task in projectList) {
+        const taskLst = projectList[task].getTaskList();
+        for (let i = 0; i < taskLst.length; i++) {
+            if(taskLst[i].getIsImportant()) {
+                content.appendChild(taskLst[i].createTaskDiv());
+            }
+
+        }
+
+    }
 })
 
 const projectDialog = document.getElementById("projectDialog");
+const cancelBtn = projectDialog.querySelector(".cancel-button");
 const addTaskDialog = document.getElementById("addTaskDialog");
 const confirmBtn = projectDialog.querySelector(".submit-button");
 
@@ -59,8 +97,12 @@ const content = document.querySelector('#content');
 
 const projectItems = document.querySelector('.projectItem');
 
+//variable to keep track of current project item id when pressed;
 let projectItemCurrentId = '';
 
+cancelBtn.addEventListener('click', function(e) {
+    projectDialog.close();
+})
 projectItems.addEventListener('click', function(e) {
         const addTaskBtn = addTaskButtonDiv();
         projectItemCurrentId = e.target.id;
@@ -106,6 +148,20 @@ content.addEventListener('click', function(e) {
     }
     else if (e.target.id == 'starBtn') {
         console.log('important btn pressed');
+
+        // Change the fill color of the path to yello
+        const svgPath = e.target.querySelector('path');
+        if (svgPath) {
+            svgPath.style.fill = 'yellow';
+        }
+        const parent = e.target.parentElement;
+        const taskList = projectList[projectItemCurrentId].getTaskList();
+        for (let i = 0; i < taskList.length; i++) {
+            if (taskList[i].getId() === parent.parentElement.id) {
+                taskList[i].setIsImportant(true);
+            }
+        }
+
     }
 })
 
@@ -160,20 +216,8 @@ confirmBtnTask.addEventListener('click', (e) => {
       const addBtn = document.getElementById("add-task");
       content.removeChild(addBtn);
       content.appendChild(taskDiv);
-
-      if (!allTasksList[projectItemCurrentId] || !Array.isArray(allTasksList[projectItemCurrentId])) {
-        allTasksList[projectItemCurrentId] = [];
-      }
-      if (allTasksList[projectItemCurrentId].length == 0) {
-        allTasksList[projectItemCurrentId] = [taskDiv];
-      }
-      else {
-        allTasksList[projectItemCurrentId].push(taskDiv);
-      }
       const addTaskBtn = addTaskButtonDiv();
-
       content.appendChild(addTaskBtn);
-
       addTaskDialog.close();
   })
 
@@ -192,7 +236,7 @@ deleteProjectBtn.addEventListener('click', function(e) {
 
     //remove deleted project from project object key, value list;
     delete projectList[projectItemCurrentId];
-    delete allTasksList[projectItemCurrentId];
+    //delete allTasksList[projectItemCurrentId];
     editOrDeleteDialog.close();
 })
 
@@ -209,6 +253,7 @@ deleteTaskBtn.addEventListener('click', function(e) {
                 break;
         }
     }
+    editOrDeleteTaskDialog.close();
 })
 
 const editTaskDialog = document.getElementById("editTaskDialog");
@@ -219,16 +264,6 @@ editTaskBtn.addEventListener('click', function(e) {
 
     editOrDeleteTaskDialog.close();
     editTaskDialog.showModal();
-
-
-
-    /*
-
-    const editedTaskDiv = document.getElementById(currentTaskDivId);
-    console.log(editedTaskDiv);
-    const title = editedTaskDiv.querySelector('#titleTag');
-    title.textContent = 'new text has changed';
-    console.log(title); */
 
 })
 
@@ -246,5 +281,16 @@ confirmBtnEdit.addEventListener('click', function(e) {
       title.textContent = newTitle;
       detail.textContent = newDetails;
       date.textContent = newDate;
+
+      const taskList = projectList[projectItemCurrentId].getTaskList();
+      for (let i = 0; i < taskList.length; i++) {
+            if (taskList[i].getId() === currentTaskDivId) {
+                taskList[i].setTitle(newTitle);
+                taskList[i].setDetails(newDetails);
+                taskList[i].setDate(newDate);
+                break;
+            }
+        }
+    editTaskDialog.close();
 
 })
